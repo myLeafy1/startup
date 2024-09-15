@@ -1,5 +1,6 @@
 # startup
 repo for cs260. woo
+
 this is a game that i programmed for a class, have fun playing it
 
 ## Elevator pitch:
