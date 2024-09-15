@@ -6,6 +6,8 @@ this is a game that i programmed for a class, have fun playing it
 I am making a procedurally generated rouge-like game with a focus on speed running. The game will be built using JavaScript and React. It’ll have a built-in speed running leaderboard, and a separate leaderboard for your friends, if you have logged in. you need to be logged in to post to the leader board.
 
 ## Features:
+Log in/sign up
+
 Play the game
 
 Add/remove friends
