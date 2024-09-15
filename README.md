@@ -28,5 +28,5 @@ Share/view high scores
 -	**WebSocket** - As a new leaderboard score is reached (friends or public), it will be broadcasted.
 
 ## rough sketch of pages
-![rough sketch of app with a home page, leaderboard page, login page, and gameplay page](rough sketch.jpg)
+![rough sketch of app with a home page, leaderboard page, login page, and gameplay page](rough_sketch.jpg)
 
