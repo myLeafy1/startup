@@ -7,7 +7,9 @@ I am making a procedurally generated rouge-like game with a focus on speed runni
 
 ## Features:
 Play the game
+
 Add/remove friends
+
 Share/view high scores
 
 ## Description of technologies
