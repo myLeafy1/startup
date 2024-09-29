@@ -1,5 +1,6 @@
 # startup
 repo for cs260. woo
+
 this is a game that i programmed for a class, have fun playing it
 
 ## Elevator pitch:
@@ -26,3 +27,7 @@ Share/view high scores
     -	retrieving friend data
 -	**DB/Login** - Store users, user’s friends, and scores in database. Register and login users. Credentials securely stored in database.
 -	**WebSocket** - As a new leaderboard score is reached (friends or public), it will be broadcasted.
+
+## rough sketch of pages
+![rough sketch of app with a home page, leaderboard page, login page, and gameplay page](rough_sketch.jpg)
+
