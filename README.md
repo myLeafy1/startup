@@ -3,6 +3,13 @@ repo for cs260. woo
 
 this is a game that i programmed for a class, have fun playing it
 
+disclaimer: i work as a web developer for the mtc, my notes may be sparse
+
+
+# Startup html
+
+i need 6 pages, the login page, game-home page, the friend page, the game page, the settings page, and the game over page. i have added links in buttons so that they all connect to each other as they should.
+
 ## Elevator pitch:
 I am making a procedurally generated rouge-like game with a focus on speed running. The game will be built using JavaScript and React. It’ll have a built-in speed running leaderboard, and a separate leaderboard for your friends, if you have logged in. you need to be logged in to post to the leader board.
 
@@ -30,4 +37,5 @@ Share/view high scores
 
 ## rough sketch of pages
 ![rough sketch of app with a home page, leaderboard page, login page, and gameplay page](rough_sketch.jpg)
+
 
