@@ -5,10 +5,15 @@ this is a game that i programmed for a class, have fun playing it
 
 disclaimer: i work as a web developer for the mtc, my notes may be sparse
 
+# startup css
+
+i added dynamic resizing and colored the links, background, and buttons to help with the vibe of the game that i want to create. i prefer the look of rounded buttons so i rounded all my menu buttons. i also added arrow buttons that appear in the play page for users on mobile
 
 # Startup html
 
 i need 6 pages, the login page, game-home page, the friend page, the game page, the settings page, and the game over page. i have added links in buttons so that they all connect to each other as they should.
+
+i added divs for stylization/spacing in startup css
 
 ## Elevator pitch:
 I am making a procedurally generated rouge-like game with a focus on speed running. The game will be built using JavaScript and React. It’ll have a built-in speed running leaderboard, and a separate leaderboard for your friends, if you have logged in. you need to be logged in to post to the leader board.
