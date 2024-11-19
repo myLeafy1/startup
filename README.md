@@ -7,7 +7,7 @@ disclaimer: i work as a web developer for the mtc, my notes may be sparse
 
 # startup css
 
-i added dynamic resizing and colored the links, background, and buttons to help with the vibe of the game that i want to create. i prefer the look of rounded buttons so i rounded all my menu buttons. i also added arrow buttons that appear in the play page for users on mobile
+i added dynamic resizing and colored the background and buttons to help with the vibe of the game that i want to create. i prefer the look of rounded buttons so i rounded all my menu buttons. i also added arrow buttons that appear in the play page for users on mobile
 
 # Startup html
 
