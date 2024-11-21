@@ -5,6 +5,10 @@ this is a game that i programmed for a class, have fun playing it
 
 disclaimer: i work as a web developer for the mtc, my notes may be sparse
 
+# startup react
+
+its now in react. i learn a lot in how to pass data around with event handlers. that, and debugged alot. i havent really programmed in react before
+
 # startup css
 
 i added dynamic resizing and colored the background and buttons to help with the vibe of the game that i want to create. i prefer the look of rounded buttons so i rounded all my menu buttons. i also added arrow buttons that appear in the play page for users on mobile
