@@ -6,8 +6,11 @@ function Login({ onButtonClick }) {
   return (
     <>
     <main>
-    <button onClick={() => onButtonClick(HOME, "User")}>login</button>
-      
+      <div className='login-container'>
+        <input type="text" placeholder="username" />
+        <input type="password" placeholder="password" />
+        <button onClick={() => onButtonClick(HOME, "User")}>login</button>
+      </div>
     </main>
 
     <footer>
