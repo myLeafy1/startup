@@ -1,9 +1,19 @@
 const express = require('express');
 const uuid = require('uuid');
+const cors = require('cors');
 const app = express();
 
+const dev = true;
+
+if (dev){
+  app.use(cors());
+  // app.use(cors({
+  //   origin: 'http://localhost:5173' 
+  // }));
+}
+
 // The scores and users are saved in memory and disappear whenever the service is restarted.
-let users = {};
+let users = [];
 let scores = [];
 let friendCodes = [];
 
@@ -22,7 +32,7 @@ app.use(`/api`, apiRouter);
 
 // CreateAuth a new user
 apiRouter.post('/auth/create', async (req, res) => {
-  const user = users[req.body.email];
+  const user = findUser(req.body.username);
   if (user) {
     res.status(409).send({ msg: 'Existing user' });
   } else {
@@ -30,8 +40,8 @@ apiRouter.post('/auth/create', async (req, res) => {
     while (friendCodes.includes(newUserFriendCode)) {
       newUserFriendCode = Math.floor(Math.random() * 100000);
     }
-    const user = { email: req.body.email, password: req.body.password, token: uuid.v4(), friendCode: newUserFriendCode, friends: [], currentHighScore: 0 };
-    users[user.email] = user;
+    const user = { username: req.body.username, password: req.body.password, token: uuid.v4(), friendCode: newUserFriendCode, friends: [], currentHighScore: 0 };
+    users.push(user);
 
     res.send({ token: user.token });
   }
@@ -39,11 +49,12 @@ apiRouter.post('/auth/create', async (req, res) => {
 
 // GetAuth login an existing user
 apiRouter.post('/auth/login', async (req, res) => {
-  const user = users[req.body.email];
+  const user = findUser(req.body.username);
   if (user) {
     if (req.body.password === user.password) {
       user.token = uuid.v4();
       res.send({ token: user.token });
+      console.log(users)
       return;
     }
   }
@@ -57,6 +68,7 @@ apiRouter.delete('/auth/logout', (req, res) => {
     delete user.token;
   }
   res.status(204).end();
+  console.log(users)
 });
 
 // GetScores
@@ -72,7 +84,7 @@ apiRouter.post('/score', (req, res) => {
 
 // GetFriendScores
 apiRouter.get('/friends/scores', (_req, res) => {
-    let friendScores = findFriendHighscores(req.body.email);
+    let friendScores = findFriendHighscores(req.body.username);
     res.send(friendScores);
   });
   
@@ -107,9 +119,11 @@ function updateScores(newScore, scores) {
     }
   }
 
-  if(users[newScore.email]) {
-    if (newScore.score > users[newScore.email].currentHighScore) {
-      users[newScore.email].currentHighScore = newScore.score;
+  const user = findUser(newScore.username);
+
+  if(user) {
+    if (newScore.score > user.currentHighScore) {
+      user.currentHighScore = newScore.score;
     }
   }
 
@@ -124,15 +138,19 @@ function updateScores(newScore, scores) {
   return scores;
 }
 
-function findFriendHighscores(email){
+function findFriendHighscores(username){
     let friendScores = []
-    const user = users[email];
+    const user = findUser(username);
     user.friends.array.forEach(friendToken => {
         let friend = users.find(e => e.friendCode === friendToken)
         if (friend) {
-            friendScores.push({userName: friend.email, score: friend.currentHighScore});
+            friendScores.push({username: friend.username, score: friend.currentHighScore});
         }
     });
     return friendScores;
+}
+
+function findUser(username){
+  return users.find(e => e.username === username);
 }
 

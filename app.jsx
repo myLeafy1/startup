@@ -13,12 +13,29 @@ function App() {
   const [page, setPage] = useState(LOGIN);
   let username = "";
 
-  const handleButtonClick = (nextPage, username = "") => {
+  const handleButtonClick = (nextPage, username = "", logout=false) => {
     setPage(nextPage);
     if (username) {
       username = username;
     }
+    if (logout){ 
+      logout(); 
+      username = "";
+    }
   };
+
+  function logout() {
+    fetch(`/api/auth/logout`, {
+      method: 'delete',
+    })
+      .catch(() => {
+        // Logout failed. Assuming offline
+      })
+      .finally(() => {
+        localStorage.removeItem('userName');
+        props.onLogout();
+      });
+  }
 
   return (
     <>

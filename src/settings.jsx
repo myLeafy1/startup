@@ -12,6 +12,7 @@ function Settings() {
             <li>setting 3: graphics</li>
           </ul>
         </div>
+        <button onClick={() => onButtonClick(LOGIN, "", true)}>logout</button>
     </div>
   );
 }
