@@ -1,6 +1,6 @@
 import React from 'react';
 import '../global.css';
-import { PLAY_GAME } from './constants';
+import { PLAY_GAME, LOGIN } from './constants';
 
 function Home({ onButtonClick }) {
   

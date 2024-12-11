@@ -64,9 +64,9 @@ apiRouter.post('/auth/login', async (req, res) => {
 // DeleteAuth logout a user
 apiRouter.delete('/auth/logout', (req, res) => {
   const user = Object.values(users).find((u) => u.token === req.body.token);
-  if (user) {
-    delete user.token;
-  }
+  // if (user) {
+  //   delete user.token;
+  // }
   res.status(204).end();
   console.log(users)
 });
@@ -79,6 +79,7 @@ apiRouter.get('/scores', (_req, res) => {
 // SubmitScore
 apiRouter.post('/score', (req, res) => {
   scores = updateScores(req.body, scores);
+  console.log(scores)
   res.send(scores);
 });
 

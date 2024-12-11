@@ -7,18 +7,18 @@ import GameEnd from './src/end';
 import Friends from './src/friends';
 import Settings from './src/settings';
 import Header from './src/header';
-import { FRIENDS, GAME_END, LOGIN, PLAY_GAME, SETTINGS, HOME } from './src/constants';
+import { FRIENDS, GAME_WON, LOGIN, PLAY_GAME, SETTINGS, HOME, GAME_ESCAPED, GAME_FAIL } from './src/constants';
 
 function App() {
   const [page, setPage] = useState(LOGIN);
   let username = "";
 
-  const handleButtonClick = (nextPage, username = "", logout=false) => {
+  const handleButtonClick = (nextPage, username = "", shouldLogout=false) => {
     setPage(nextPage);
     if (username) {
       username = username;
     }
-    if (logout){ 
+    if (shouldLogout){ 
       logout(); 
       username = "";
     }
@@ -33,7 +33,7 @@ function App() {
       })
       .finally(() => {
         localStorage.removeItem('userName');
-        props.onLogout();
+        //props.onLogout();
       });
   }
 
@@ -43,8 +43,10 @@ function App() {
         <div className="centered content">
             {page === LOGIN && <Login onButtonClick={handleButtonClick} />}
             {page === HOME && <Home onButtonClick={handleButtonClick} />}
-            {page === PLAY_GAME && <GamePlay onButtonClick={handleButtonClick} />}
-            {page === GAME_END && <GameEnd onButtonClick={handleButtonClick} />}
+            {page === PLAY_GAME && <GamePlay onButtonClick={handleButtonClick} username={username}/>}
+            {page === GAME_WON && <GameEnd onButtonClick={handleButtonClick} howGameEnded={GAME_WON}/>}
+            {page === GAME_FAIL && <GameEnd onButtonClick={handleButtonClick} howGameEnded={GAME_FAIL}/>}
+            {page === GAME_ESCAPED && <GameEnd onButtonClick={handleButtonClick} howGameEnded={GAME_ESCAPED}/>}
             {page === FRIENDS && <Friends onButtonClick={handleButtonClick} />}
             {page === SETTINGS && <Settings onButtonClick={handleButtonClick} />}
         </div>

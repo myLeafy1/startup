@@ -1,13 +1,13 @@
 import React from 'react';
 import '../global.css';
-import { HOME } from './constants';
+import { HOME, IS_DEV_ENVIRONMENT } from './constants';
 
 function Login({ onButtonClick }) {
   const [username, setUserName] = React.useState('');
   const [password, setPassword] = React.useState('');
   const [displayError, setDisplayError] = React.useState(null);
 
-  const dev = true;
+  
 
   function validateInput() {
     if (!username || !password) {
@@ -29,7 +29,7 @@ function Login({ onButtonClick }) {
 
   async function loginOrCreate(endpoint) {
     let fullEndpoint = endpoint
-    if (dev){
+    if (IS_DEV_ENVIRONMENT){
       fullEndpoint = `http://localhost:3000${endpoint}`
     }
     const response = await fetch(fullEndpoint, {
@@ -41,7 +41,6 @@ function Login({ onButtonClick }) {
     });
     if (response?.status === 200) {
       localStorage.setItem('userName', username);
-      //props.onLogin(userName);
       onButtonClick(HOME, "User")
     } else {
       //const body = await response.json();

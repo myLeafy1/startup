@@ -5,6 +5,10 @@ this is a game that i programmed for a class, have fun playing it
 
 disclaimer: i work as a web developer for the mtc, my notes may be sparse
 
+# startup service
+
+now you can log in, logout, have an account, and save scores. if i have time after the database stuff I'll add in the friendcode stuff.
+
 # startup react
 
 its now in react. i learn a lot in how to pass data around with event handlers. that, and debugged alot. i havent really programmed in react before
