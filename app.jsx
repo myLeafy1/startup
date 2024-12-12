@@ -11,17 +11,19 @@ import { FRIENDS, GAME_WON, LOGIN, PLAY_GAME, SETTINGS, HOME, GAME_ESCAPED, GAME
 
 function App() {
   const [page, setPage] = useState(LOGIN);
-  let username = "";
+  const [username, setUserName] = useState("");
 
-  const handleButtonClick = (nextPage, username = "", shouldLogout=false) => {
+  const handleButtonClick = (nextPage, newUsersName = "", shouldLogout=false) => {
     setPage(nextPage);
-    if (username) {
-      username = username;
+    console.log(username)
+    if (newUsersName != "") {
+      setUserName(newUsersName)
     }
     if (shouldLogout){ 
       logout(); 
-      username = "";
+      setUserName("");
     }
+    console.log(username)
   };
 
   function logout() {

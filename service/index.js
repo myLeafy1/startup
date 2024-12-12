@@ -6,7 +6,7 @@ const cors = require('cors');
 const app = express();
 const DB = require('./database.js');
 
-const dev = true;
+const dev = false;
 
 if (dev){
   app.use(cors());
@@ -41,11 +41,12 @@ app.use(`/api`, apiRouter);
 
 // CreateAuth a new user
 apiRouter.post('/auth/create', async (req, res) => {
-  const user = findUser(req.body.username);
+  var user = await DB.getUser(req.body.username);
   if (user) {
     res.status(409).send({ msg: 'Existing user' });
   } else {
-    const user = await DB.createUser(req.body.email, req.body.password);
+    user = await DB.createUser(req.body.username, req.body.password);
+    devLog(user)
 
     // Set the cookie
     setAuthCookie(res, user.token);
@@ -59,6 +60,7 @@ apiRouter.post('/auth/create', async (req, res) => {
 // GetAuth login an existing user
 apiRouter.post('/auth/login', async (req, res) => {
   const user = await DB.getUser(req.body.username);
+  devLog(user)
   if (user) {
     if (await bcrypt.compare(req.body.password, user.password)) {
       setAuthCookie(res, user.token);
@@ -67,23 +69,11 @@ apiRouter.post('/auth/login', async (req, res) => {
     }
   }
   res.status(401).send({ msg: 'Unauthorized' });
-
-
-  // const user = findUser(req.body.username);
-  // if (user) {
-  //   if (req.body.password === user.password) {
-  //     user.token = uuid.v4();
-  //     res.send({ token: user.token });
-  //     devLog(users);
-  //     return;
-  //   }
-  // }
-  res.status(401).send({ msg: 'Unauthorized' });
 });
 
 // DeleteAuth logout a user
 apiRouter.delete('/auth/logout', (req, res) => {
-  cres.clearCookie(authCookieName);
+  res.clearCookie(authCookieName);
   res.status(204).end();
   devLog(users);
 });
@@ -95,9 +85,11 @@ apiRouter.get('/scores', (_req, res) => {
 
 // SubmitScore
 apiRouter.post('/score', (req, res) => {
-  scores = updateScores(req.body, scores);
-  devLog(scores);
-  res.send(scores);
+  //req.body
+  updateOrAddScore(req.body.username, req.body.score)
+  //scores = updateScores(req.body, scores);
+  devLog(req.body);
+  //res.send(scores);
 });
 
 // GetFriendScores
@@ -122,9 +114,29 @@ app.use((_req, res) => {
   res.sendFile('index.html', { root: 'public' });
 });
 
+function setAuthCookie(res, authToken) {
+  res.cookie(authCookieName, authToken, {
+    secure: true,
+    httpOnly: true,
+    sameSite: 'strict',
+  });
+}
+
 app.listen(port, () => {
   console.log(`Listening on port ${port}`);
 });
+
+
+function updateOrAddScore(username, score){
+  var userScore = DB.getUserScore(username);
+  if (userScore){
+    if (userScore.score < score){
+      Db.updateScore(username, score);
+    }
+  } else {
+    DB.addScore(username, score)
+  }
+}
 
 // updateScores considers a new score for inclusion in the high scores.
 function updateScores(newScore, scores) {

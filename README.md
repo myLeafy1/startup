@@ -5,6 +5,10 @@ this is a game that i programmed for a class, have fun playing it
 
 disclaimer: i work as a web developer for the mtc, my notes may be sparse
 
+# startup login
+
+we are now connected to the database. the database holds all the user data so that when the server restarts nothing will be lost. users, scores, and friendcodes are stored back there.
+
 # startup service
 
 now you can log in, logout, have an account, and save scores. if i have time after the database stuff I'll add in the friendcode stuff.

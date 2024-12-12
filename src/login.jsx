@@ -41,7 +41,7 @@ function Login({ onButtonClick }) {
     });
     if (response?.status === 200) {
       localStorage.setItem('userName', username);
-      onButtonClick(HOME, "User")
+      onButtonClick(HOME, username);
     } else {
       //const body = await response.json();
       //setDisplayError(`⚠ Error: ${body.msg}`);

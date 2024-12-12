@@ -8,6 +8,7 @@ const client = new MongoClient(url);
 const db = client.db('game');
 const userCollection = db.collection('user');
 const scoreCollection = db.collection('score');
+const friendCodeCollection = db.collection('friendCodes');
 
 // This will asynchronously test the connection and exit the process if it fails
 (async function testConnection() {
@@ -29,7 +30,7 @@ function getUserByToken(token) {
 async function createUser(username, password) {
   const passwordHash = await bcrypt.hash(password, 10);
 
-  const friendCodes = getFriendCodes();
+  const friendCodes = await getFriendCodes();
 
   let newUserFriendCode = Math.floor(Math.random() * 100000);
     while (friendCodes.includes(newUserFriendCode)) {
@@ -43,9 +44,22 @@ async function createUser(username, password) {
   return user;
 }
 
-async function addScore(score) {
-    const scoreItem = { name: username, score: score };
+async function addScore(username,score) {
+  const scoreItem = { username: username, score: score };
   return scoreCollection.insertOne(scoreItem);
+}
+
+async function updateScore(username,score) {
+  const scoreItem = { username: username, score: score };
+  return scoreCollection.insertOne(scoreItem);
+}
+
+function getAllScores(){
+  return scoreCollection.find({});
+}
+
+function getUserScore() {
+  return scoreCollection.findOne({ username: username })
 }
 
 function getHighScores() {
@@ -59,11 +73,11 @@ function getHighScores() {
 }
 
 async function addFriendCode(friendCode) {
-    return scoreCollection.insertOne(friendCode);
+    return friendCodeCollection.insertOne({friendCode: friendCode});
 }
 
 function getFriendCodes() {
-    const cursor = scoreCollection.find({});
+    const cursor = friendCodeCollection.find({});
     return cursor.toArray();
 }
 
@@ -73,4 +87,6 @@ module.exports = {
   createUser,
   addScore,
   getHighScores,
+  getUserScore,
+  updateScore,
 };

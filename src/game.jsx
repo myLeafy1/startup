@@ -106,7 +106,7 @@ function GamePlay({ onButtonClick, username }) {
   }
 
   async function updateScore(score) {
-    const newScore = { name: username, score: score };
+    const newScore = { username: username, score: score };
     let fullEndpoint = '/api/score'
     if (IS_DEV_ENVIRONMENT){
       fullEndpoint = `http://localhost:3000/api/score`

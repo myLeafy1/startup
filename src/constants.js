@@ -7,4 +7,4 @@ export const LOGIN = 'login';
 export const GAME_FAIL = 'You died!';
 export const GAME_ESCAPED = 'You got away!';
 
-export const IS_DEV_ENVIRONMENT = true;
+export const IS_DEV_ENVIRONMENT = false;
