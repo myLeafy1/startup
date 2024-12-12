@@ -12,6 +12,12 @@ if (dev){
   // }));
 }
 
+function devLog(message){
+  if (dev){
+    console.log(message);
+  }
+}
+
 // The scores and users are saved in memory and disappear whenever the service is restarted.
 let users = [];
 let scores = [];
@@ -54,7 +60,7 @@ apiRouter.post('/auth/login', async (req, res) => {
     if (req.body.password === user.password) {
       user.token = uuid.v4();
       res.send({ token: user.token });
-      console.log(users)
+      devLog(users);
       return;
     }
   }
@@ -68,7 +74,7 @@ apiRouter.delete('/auth/logout', (req, res) => {
   //   delete user.token;
   // }
   res.status(204).end();
-  console.log(users)
+  devLog(users);
 });
 
 // GetScores
@@ -79,7 +85,7 @@ apiRouter.get('/scores', (_req, res) => {
 // SubmitScore
 apiRouter.post('/score', (req, res) => {
   scores = updateScores(req.body, scores);
-  console.log(scores)
+  devLog(scores);
   res.send(scores);
 });
 
