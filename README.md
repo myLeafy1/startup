@@ -11,7 +11,7 @@ we are now connected to the database. the database holds all the user data so th
 
 # startup service
 
-now you can log in, logout, have an account, and save scores. the 3rd party api grabs a random image of a cat on the settings page if you click get random cat. this breaks the css sometimes when too large of an image is loaded
+now you can log in, logout, have an account, and save scores. the 3rd party api grabs a random image of a cat on the settings page if you click get random cat. this breaks the css sometimes when too large of an image is loaded. it takes two clicks to work. the first click primes everything, the second gets the cat image.
 
 # startup react
 
