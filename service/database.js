@@ -5,7 +5,7 @@ const config = require('./dbConfig.json');
 
 const url = `mongodb+srv://${config.userName}:${config.password}@${config.hostname}`;
 const client = new MongoClient(url);
-const db = client.db('simon');
+const db = client.db('game');
 const userCollection = db.collection('user');
 const scoreCollection = db.collection('score');
 
@@ -18,30 +18,34 @@ const scoreCollection = db.collection('score');
   process.exit(1);
 });
 
-function getUser(email) {
-  return userCollection.findOne({ email: email });
+function getUser(username) {
+  return userCollection.findOne({ username: username });
 }
 
 function getUserByToken(token) {
   return userCollection.findOne({ token: token });
 }
 
-async function createUser(email, password) {
-  // Hash the password before we insert it into the database
+async function createUser(username, password) {
   const passwordHash = await bcrypt.hash(password, 10);
 
-  const user = {
-    email: email,
-    password: passwordHash,
-    token: uuid.v4(),
-  };
+  const friendCodes = getFriendCodes();
+
+  let newUserFriendCode = Math.floor(Math.random() * 100000);
+    while (friendCodes.includes(newUserFriendCode)) {
+      newUserFriendCode = Math.floor(Math.random() * 100000);
+    }
+    addFriendCode(newUserFriendCode);
+    const user = { username: username, password: passwordHash, token: uuid.v4(), friendCode: newUserFriendCode, friends: [], currentHighScore: 0 };
+    
   await userCollection.insertOne(user);
 
   return user;
 }
 
 async function addScore(score) {
-  return scoreCollection.insertOne(score);
+    const scoreItem = { name: username, score: score };
+  return scoreCollection.insertOne(scoreItem);
 }
 
 function getHighScores() {
@@ -52,6 +56,15 @@ function getHighScores() {
   };
   const cursor = scoreCollection.find(query, options);
   return cursor.toArray();
+}
+
+async function addFriendCode(friendCode) {
+    return scoreCollection.insertOne(friendCode);
+}
+
+function getFriendCodes() {
+    const cursor = scoreCollection.find({});
+    return cursor.toArray();
 }
 
 module.exports = {

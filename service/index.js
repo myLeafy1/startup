@@ -1,7 +1,10 @@
 const express = require('express');
+const cookieParser = require('cookie-parser');
+const bcrypt = require('bcrypt');
 const uuid = require('uuid');
 const cors = require('cors');
 const app = express();
+const DB = require('./database.js');
 
 const dev = true;
 
@@ -18,6 +21,8 @@ function devLog(message){
   }
 }
 
+const authCookieName = 'token';
+
 // The scores and users are saved in memory and disappear whenever the service is restarted.
 let users = [];
 let scores = [];
@@ -26,13 +31,11 @@ let friendCodes = [];
 // The service port. In production the front-end code is statically hosted by the service on the same port.
 const port = process.argv.length > 2 ? process.argv[2] : 3000;
 
-// JSON body parsing using built-in middleware
 app.use(express.json());
-
-// Serve up the front-end static content hosting
+app.use(cookieParser());
 app.use(express.static('public'));
+app.set('trust proxy', true);
 
-// Router for service endpoints
 var apiRouter = express.Router();
 app.use(`/api`, apiRouter);
 
@@ -42,37 +45,45 @@ apiRouter.post('/auth/create', async (req, res) => {
   if (user) {
     res.status(409).send({ msg: 'Existing user' });
   } else {
-    let newUserFriendCode = Math.floor(Math.random() * 100000);
-    while (friendCodes.includes(newUserFriendCode)) {
-      newUserFriendCode = Math.floor(Math.random() * 100000);
-    }
-    const user = { username: req.body.username, password: req.body.password, token: uuid.v4(), friendCode: newUserFriendCode, friends: [], currentHighScore: 0 };
-    users.push(user);
+    const user = await DB.createUser(req.body.email, req.body.password);
 
-    res.send({ token: user.token });
+    // Set the cookie
+    setAuthCookie(res, user.token);
+
+    res.send({
+      id: user._id,
+    });
   }
 });
 
 // GetAuth login an existing user
 apiRouter.post('/auth/login', async (req, res) => {
-  const user = findUser(req.body.username);
+  const user = await DB.getUser(req.body.username);
   if (user) {
-    if (req.body.password === user.password) {
-      user.token = uuid.v4();
-      res.send({ token: user.token });
-      devLog(users);
+    if (await bcrypt.compare(req.body.password, user.password)) {
+      setAuthCookie(res, user.token);
+      res.send({ id: user._id });
       return;
     }
   }
+  res.status(401).send({ msg: 'Unauthorized' });
+
+
+  // const user = findUser(req.body.username);
+  // if (user) {
+  //   if (req.body.password === user.password) {
+  //     user.token = uuid.v4();
+  //     res.send({ token: user.token });
+  //     devLog(users);
+  //     return;
+  //   }
+  // }
   res.status(401).send({ msg: 'Unauthorized' });
 });
 
 // DeleteAuth logout a user
 apiRouter.delete('/auth/logout', (req, res) => {
-  const user = Object.values(users).find((u) => u.token === req.body.token);
-  // if (user) {
-  //   delete user.token;
-  // }
+  cres.clearCookie(authCookieName);
   res.status(204).end();
   devLog(users);
 });
